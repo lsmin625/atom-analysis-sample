@@ -28,11 +28,13 @@ CREATE TABLE IF NOT EXISTS feature_catalog_analysis (
   feature_count       INTEGER,
   catalog             JSONB NOT NULL,         -- 저장물: feature-catalog.json 전체
   saved_at            TIMESTAMPTZ NOT NULL DEFAULT now(),
-  UNIQUE (system_name, application_name, analyzed_scope, version)
+  -- 버전 키는 안정적인 대상 식별자 (system, application, analysis_type).
+  -- analyzed_scope 는 기록만 하고 버전 키에 포함하지 않는다(파일 집합 변동에 영향받지 않도록).
+  UNIQUE (system_name, application_name, analysis_type, version)
 );
 
 CREATE INDEX IF NOT EXISTS idx_fca_lookup
-  ON feature_catalog_analysis (system_name, application_name, analyzed_scope);
+  ON feature_catalog_analysis (system_name, application_name, analysis_type);
 
 CREATE INDEX IF NOT EXISTS idx_fca_hash
   ON feature_catalog_analysis (content_hash);

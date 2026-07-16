@@ -42,10 +42,10 @@ CREATE TABLE IF NOT EXISTS feature_catalog_analysis (
   feature_count       INTEGER,
   catalog             JSONB NOT NULL,
   saved_at            TIMESTAMPTZ NOT NULL DEFAULT now(),
-  UNIQUE (system_name, application_name, analyzed_scope, version)
+  UNIQUE (system_name, application_name, analysis_type, version)
 );
 CREATE INDEX IF NOT EXISTS idx_fca_lookup
-  ON feature_catalog_analysis (system_name, application_name, analyzed_scope);
+  ON feature_catalog_analysis (system_name, application_name, analysis_type);
 CREATE INDEX IF NOT EXISTS idx_fca_hash
   ON feature_catalog_analysis (content_hash);
 `;
@@ -62,7 +62,10 @@ export async function saveCatalog(record) {
   try {
     await client.query("BEGIN");
 
-    const lockKey = `${record.systemName}||${record.applicationName}||${record.analyzedScope}`;
+    // Version increments per stable target = (system, application, analysis type).
+    // analyzed_scope is recorded but NOT part of the key, so a changed source-file
+    // set (e.g. one more feature) still counts as the same target's next version.
+    const lockKey = `${record.systemName}||${record.applicationName}||${record.analysisType}`;
     await client.query("SELECT pg_advisory_xact_lock(hashtext($1))", [lockKey]);
 
     const { rows: verRows } = await client.query(
@@ -70,8 +73,8 @@ export async function saveCatalog(record) {
          FROM feature_catalog_analysis
         WHERE system_name = $1
           AND application_name IS NOT DISTINCT FROM $2
-          AND analyzed_scope IS NOT DISTINCT FROM $3`,
-      [record.systemName, record.applicationName, record.analyzedScope]
+          AND analysis_type IS NOT DISTINCT FROM $3`,
+      [record.systemName, record.applicationName, record.analysisType]
     );
     const version = verRows[0].next;
 

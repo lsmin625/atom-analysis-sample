@@ -1,0 +1,33 @@
+# ==========================================
+# Claude Code / CLI Settings
+# ==========================================
+# 개인 맞춤형 설정 및 개인용 권한 설정 (절대 커밋 금지)
+.claude/settings.local.json
+
+# Claude가 로컬 실행 시 임시로 생성하는 무시 패턴 가이드 (사용 시 제외)
+.claudeignore
+
+# (선택 사항) 개인 메모나 개인 전용 Claude 규칙을 로컬에만 두고 싶을 때
+CLAUDE.local.md
+
+# ==========================================
+# VS Code Environment
+# ==========================================
+.vscode/
+!.vscode/extensions.json
+*.code-workspace
+
+# ==========================================
+# Security / Secrets (Claude의 무단 접근 및 유출 방지)
+# ==========================================
+.env
+.env.*
+*.pem
+*.key
+certs/
+secrets/
+
+# 분석 대상 저장소와 분석 결과
+frontend-analysis-output/
+inputs/
+

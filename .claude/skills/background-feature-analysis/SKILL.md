@@ -174,14 +174,14 @@ description: >
 
 ## Output
 
-출력 디렉터리는 `background-analysis-output/` 이며 다음 6개 파일을 생성한다.
+출력 디렉터리는 `outputs/background-analysis-output/` 이며 다음 6개 파일을 생성한다.
 
-- `background-analysis-output/repository-inventory.md`
-- `background-analysis-output/feature-catalog.json`
-- `background-analysis-output/feature-catalog.md`
-- `background-analysis-output/feature-evidence.md`
-- `background-analysis-output/coverage-report.md`
-- `background-analysis-output/unresolved-items.md`
+- `outputs/background-analysis-output/repository-inventory.md`
+- `outputs/background-analysis-output/feature-catalog.json`
+- `outputs/background-analysis-output/feature-catalog.md`
+- `outputs/background-analysis-output/feature-evidence.md`
+- `outputs/background-analysis-output/coverage-report.md`
+- `outputs/background-analysis-output/unresolved-items.md`
 
 기존 소스 코드는 수정하지 않는다.
 
@@ -191,6 +191,6 @@ description: >
 `save_feature_catalog` 도구를 호출하여 `feature-catalog.json` 을
 로컬 PostgreSQL 에 저장한다.
 
-- `catalogPath="background-analysis-output/feature-catalog.json"`
+- `catalogPath="outputs/background-analysis-output/feature-catalog.json"`
 - 시스템·애플리케이션·저장소·분석가·분석 일시·버전은 자동 기록된다.
 - 도구 호출이 실패해도 산출물은 유효하며 실패 사유만 보고한다.

@@ -38,12 +38,12 @@ Follow the preloaded `backend-feature-analysis` skill.
 7. Distinguish application functionality from technical or infrastructural behavior.
 8. Never invent backend business rules; record only what the code confirms.
 9. Do not modify application source files.
-10. Place generated results only under `backend-analysis-output/`.
+10. Place generated results only under `outputs/backend-analysis-output/`.
 11. Route background-style triggers (@Scheduled, batch jobs, message listeners)
     to background analysis instead of cataloging them as request features.
 12. Finish with an independent omission and coverage review.
 13. After the outputs are produced, call the `feature-catalog-store` MCP tool
-    `save_feature_catalog` (catalogPath=`backend-analysis-output/feature-catalog.json`)
+    `save_feature_catalog` (catalogPath=`outputs/backend-analysis-output/feature-catalog.json`)
     to persist the catalog to PostgreSQL. If it fails, report the reason; the
     generated outputs remain valid.
 

@@ -10,7 +10,7 @@ metadata:
 **Why:** This is a recurring feature-analysis target ("atom-analysis-sample"). Re-discovery is expensive; these anchors speed future passes.
 
 **How to apply (verify against current code first — this is a point-in-time snapshot):**
-- Output goes to `frontend-analysis-output/` (CLAUDE.md overrides the skill's default `analysis-output/`).
+- Output goes to `outputs/frontend-analysis-output/` (path defined by the frontend-feature-analysis skill).
 - Scale anchor: ~71 source files (60 Vue + 11 TS), baseline of ~73 identified features across domains AUTH/NAV/APP/DOC/OAS(document content authoring)/GLB(admin master data)/PRV/SYS.
 - No Pinia — state is reactive-module singletons (`oas-document.ts`, `oas-application.ts`, `session.ts`) plus reactive-Map registries (`store-popups.ts`, `store-callbacks.ts`). Don't grep for defineStore.
 - No tests, no i18n, no setInterval/WebSocket/EventSource/window.print. Don't spend time hunting these.

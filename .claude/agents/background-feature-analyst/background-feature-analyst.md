@@ -39,12 +39,12 @@ Follow the preloaded `background-feature-analysis` skill.
    infrastructural behavior.
 8. Never invent backend business rules; record only what the code confirms.
 9. Do not modify application source files.
-10. Place generated results only under `background-analysis-output/`.
+10. Place generated results only under `outputs/background-analysis-output/`.
 11. Explicitly flag disabled, unregistered or unreachable triggers/jobs, and
     note multi-instance duplicate-run risk where relevant.
 12. Finish with an independent omission and coverage review.
 13. After the outputs are produced, call the `feature-catalog-store` MCP tool
-    `save_feature_catalog` (catalogPath=`background-analysis-output/feature-catalog.json`)
+    `save_feature_catalog` (catalogPath=`outputs/background-analysis-output/feature-catalog.json`)
     to persist the catalog to PostgreSQL. If it fails, report the reason; the
     generated outputs remain valid.
 

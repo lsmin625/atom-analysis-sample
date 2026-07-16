@@ -34,10 +34,10 @@ Follow the preloaded `frontend-feature-analysis` skill.
 6. Distinguish application functionality from technical or decorative UI behavior.
 7. Never invent backend business rules.
 8. Do not modify application source files.
-9. Place generated results only under `frontend-analysis-output/`.
+9. Place generated results only under `outputs/frontend-analysis-output/`.
 10. Finish with an independent omission and coverage review.
 11. After the outputs are produced, call the `feature-catalog-store` MCP tool
-    `save_feature_catalog` (catalogPath=`frontend-analysis-output/feature-catalog.json`)
+    `save_feature_catalog` (catalogPath=`outputs/frontend-analysis-output/feature-catalog.json`)
     to persist the catalog to PostgreSQL. If it fails, report the reason; the
     generated outputs remain valid.
 

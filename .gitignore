@@ -31,10 +31,8 @@ certs/
 secrets/
 
 # 분석 대상 저장소와 분석 결과
-frontend-analysis-output/
-backend-analysis-output/
-background-analysis-output/
 inputs/
+outputs/
 
 # ==========================================
 # 분석가 로컬 설정 (Git 동기화 금지)

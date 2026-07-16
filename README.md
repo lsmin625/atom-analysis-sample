@@ -54,10 +54,10 @@ atom-analysis-sample/
 ├─ inputs/                       # 분석 대상 애플리케이션(git 미추적)
 │  ├─ oas-doc-ui/                # 프론트엔드 샘플: Vue 3 + TypeScript + Vite + Bootstrap
 │  └─ oas-doc-api/               # 백엔드 샘플: Spring Boot + JPA + JWT (Maven)
-└─ frontend-analysis-output/     # 프론트엔드 분석 산출물(git 미추적)
+└─ outputs/     # 프론트엔드 분석 산출물(git 미추적)
 ```
 
-> `inputs/`, `*-analysis-output/`, `analyst.config.json`, `mcp-servers/**/node_modules/`
+> `inputs/`, `outputs/`, `analyst.config.json`, `mcp-servers/**/node_modules/`
 > 는 `.gitignore`에 의해 커밋에서 제외된다. 분석 대상 소스, 생성 결과물,
 > 분석가 개인 설정은 로컬 워크스페이스에만 존재한다.
 
@@ -65,9 +65,9 @@ atom-analysis-sample/
 
 | 종류 | 분석 Skill | 전용 서브에이전트 | 출력 디렉터리 |
 |---|---|---|---|
-| 프론트엔드 | `frontend-feature-analysis` | `frontend-feature-analyst` | `frontend-analysis-output/` |
-| 백엔드 | `backend-feature-analysis` | `backend-feature-analyst` | `backend-analysis-output/` |
-| 백그라운드 | `background-feature-analysis` | `background-feature-analyst` | `background-analysis-output/` |
+| 프론트엔드 | `frontend-feature-analysis` | `frontend-feature-analyst` | `outputs/frontend-analysis-output/` |
+| 백엔드 | `backend-feature-analysis` | `backend-feature-analyst` | `outputs/backend-analysis-output/` |
+| 백그라운드 | `background-feature-analysis` | `background-feature-analyst` | `outputs/background-analysis-output/` |
 
 각 Skill은 애플리케이션 종류에 맞춘 12단계 분석 절차, 기능 스키마
 (`feature-schema.md`), 검증 체크리스트(`validation-checklist.md`)를 포함한다.
@@ -137,7 +137,7 @@ atom-analysis-sample/
 3. 분석 대상 애플리케이션을 `inputs/` 하위에 배치한다.
 4. Claude Code에서 분석을 요청한다. 대상 종류에 맞는 Skill 또는
    전용 서브에이전트가 선택된다. `prompts/`의 템플릿을 참고할 수 있다.
-5. 분석 완료 후 해당 `*-analysis-output/` 디렉터리에서 산출물을 확인하고,
+5. 분석 완료 후 해당 `outputs/` 디렉터리에서 산출물을 확인하고,
    결과는 자동으로 PostgreSQL 에 저장된다.
 
 ## 원칙

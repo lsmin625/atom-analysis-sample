@@ -123,7 +123,7 @@ export function extractAnalyzedPaths(features) {
 
 export function inferAnalysisType(catalogPath, override) {
   if (override) return override;
-  const dir = path.basename(path.dirname(path.resolve(catalogPath)));
-  const m = dir.match(/^(frontend|backend|background)-analysis-output$/);
+  const dir = path.dirname(path.resolve(catalogPath)).replace(/\\/g, "/");
+  const m = dir.match(/outputs\/(frontend|backend|background)-analysis-output$/);
   return m ? m[1] : null;
 }

@@ -192,14 +192,14 @@ description: >
 
 ## Output
 
-출력 디렉터리는 `frontend-analysis-output/` 이며 다음 6개 파일을 생성한다.
+출력 디렉터리는 `outputs/frontend-analysis-output/` 이며 다음 6개 파일을 생성한다.
 
-- `frontend-analysis-output/repository-inventory.md`
-- `frontend-analysis-output/feature-catalog.json`
-- `frontend-analysis-output/feature-catalog.md`
-- `frontend-analysis-output/feature-evidence.md`
-- `frontend-analysis-output/coverage-report.md`
-- `frontend-analysis-output/unresolved-items.md`
+- `outputs/frontend-analysis-output/repository-inventory.md`
+- `outputs/frontend-analysis-output/feature-catalog.json`
+- `outputs/frontend-analysis-output/feature-catalog.md`
+- `outputs/frontend-analysis-output/feature-evidence.md`
+- `outputs/frontend-analysis-output/coverage-report.md`
+- `outputs/frontend-analysis-output/unresolved-items.md`
 
 기존 소스 코드는 수정하지 않는다.
 
@@ -209,6 +209,6 @@ description: >
 `save_feature_catalog` 도구를 호출하여 `feature-catalog.json` 을
 로컬 PostgreSQL 에 저장한다.
 
-- `catalogPath="frontend-analysis-output/feature-catalog.json"`
+- `catalogPath="outputs/frontend-analysis-output/feature-catalog.json"`
 - 시스템·애플리케이션·저장소·분석가·분석 일시·버전은 자동 기록된다.
 - 도구 호출이 실패해도 산출물은 유효하며 실패 사유만 보고한다.

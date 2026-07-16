@@ -65,9 +65,9 @@
 각 분석 Skill은 애플리케이션 종류에 따라 다음 규칙의 전용
 출력 디렉터리에 산출물을 작성한다.
 
-- 프론트엔드: `frontend-analysis-output/`
-- 백엔드: `backend-analysis-output/`
-- 백그라운드: `background-analysis-output/`
+- 프론트엔드: `outputs/frontend-analysis-output/`
+- 백엔드: `outputs/backend-analysis-output/`
+- 백그라운드: `outputs/background-analysis-output/`
 
 모든 종류가 공통으로 다음 6개 표준 산출물을 생성한다.
 

@@ -84,21 +84,25 @@ atom-analysis-sample/
 - `coverage-report.md` — 커버리지 지표 및 최종 분류
 - `unresolved-items.md` — 미분류·의심·확인 필요 항목
 
-## 결과 저장 (PostgreSQL)
+## 분석 완료 후처리 (자동)
 
-분석이 완료되면 `feature-catalog.json` 이 로컬 PostgreSQL 에 저장된다.
-저장은 `mcp-servers/feature-catalog-store` MCP 서버의
-`save_feature_catalog` 도구가 담당하며, 분석 에이전트가 산출물 생성
-직후 자동으로 호출한다.
+분석이 완료되면 `mcp-servers/feature-catalog-store` MCP 서버가 두 가지
+후처리를 자동 수행한다(MCP 도구 미노출 환경에서는 CLI 로 대체).
 
-저장 시 함께 기록되는 메타데이터:
+**1. DB 저장** — `save_feature_catalog` 로 `feature-catalog.json` 을 로컬
+PostgreSQL 에 저장. 함께 기록되는 메타데이터:
 
 - **시스템 / 애플리케이션 / 저장소 / 분석 부분** — 소스코드와 카탈로그에서
-  자동 추출된다(package.json·pom.xml, git remote/branch/commit,
-  카탈로그 `systemName`·`sourceFiles`).
-- **분석가** — 로컬 `analyst.config.json` 에서 읽는다.
-- **분석 일시 / 저장물 버전** — 도구가 자동 기록한다(동일 대상 재분석 시
-  버전이 1씩 증가).
+  자동 추출(package.json·pom.xml, git remote/branch/commit, `systemName`·`sourceFiles`)
+- **분석가** — 로컬 `analyst.config.json` 에서 읽음
+- **분석 일시 / 저장물 버전** — 자동 기록(동일 대상 재분석 시 버전 1씩 증가;
+  버전 키는 시스템·애플리케이션·분석유형)
+
+**2. 기능 결정 목록 생성** — `generate_decision_list` 로 해당 출력 폴더에
+`feature-decision-list.xlsx` 를 생성. 화면·코드 용어를 제거하고 업무 관점
+컬럼 + 결정 컬럼(To-Be 채택/우선순위)으로 구성되어, 현업이 화면 없이
+to-be 채택 여부를 논의할 수 있다. DB 없이도 동작한다.
+CLI: `node mcp-servers/feature-catalog-store/src/gen-decision-list.js <catalogPath>`
 
 서버 구성·스키마·도구 파라미터의 자세한 내용은
 `mcp-servers/feature-catalog-store/README.md` 를 참고한다.

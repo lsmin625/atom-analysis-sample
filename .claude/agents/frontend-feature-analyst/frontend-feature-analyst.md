@@ -36,10 +36,13 @@ Follow the preloaded `frontend-feature-analysis` skill.
 8. Do not modify application source files.
 9. Place generated results only under `outputs/frontend-analysis-output/`.
 10. Finish with an independent omission and coverage review.
-11. After the outputs are produced, call the `feature-catalog-store` MCP tool
-    `save_feature_catalog` (catalogPath=`outputs/frontend-analysis-output/feature-catalog.json`)
-    to persist the catalog to PostgreSQL. If it fails, report the reason; the
-    generated outputs remain valid.
+11. After the outputs are produced, run BOTH post-analysis steps of the
+    `feature-catalog-store` MCP server (or its CLI equivalents if MCP tools are
+    not exposed to this agent):
+    a. `save_feature_catalog` (catalogPath=`outputs/frontend-analysis-output/feature-catalog.json`) — persist the catalog to PostgreSQL.
+    b. `generate_decision_list` (same catalogPath) — write `feature-decision-list.xlsx`
+       for business to-be adoption discussion. CLI: `node mcp-servers/feature-catalog-store/src/gen-decision-list.js outputs/frontend-analysis-output/feature-catalog.json`
+    If either fails, report the reason; the generated outputs remain valid.
 
 For a large repository, divide exploration into logical areas such as:
 

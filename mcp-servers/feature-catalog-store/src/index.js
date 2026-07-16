@@ -13,6 +13,7 @@ import { z } from "zod";
 
 import { requireAnalyst } from "./config.js";
 import { initSchema, saveCatalog } from "./db.js";
+import { generateDecisionList } from "./decision-list.js";
 import {
   readCatalog,
   extractRepository,
@@ -118,6 +119,44 @@ server.tool(
       return {
         isError: true,
         content: [{ type: "text", text: `save_feature_catalog failed: ${err.message}` }],
+      };
+    }
+  }
+);
+
+server.tool(
+  "generate_decision_list",
+  "Generate the business-facing feature-decision-list.xlsx from a completed " +
+    "feature-catalog.json. The workbook lets non-technical users decide, per " +
+    "feature, whether the to-be application should provide it (screen/code fields " +
+    "removed; decision columns left blank). Call this after an analysis run produces " +
+    "feature-catalog.json. Works for frontend/backend/background catalogs.",
+  {
+    catalogPath: z
+      .string()
+      .describe("Path to the produced feature-catalog.json (absolute, or relative to the workspace root)."),
+    outPath: z
+      .string()
+      .optional()
+      .describe("Output xlsx path. Defaults to feature-decision-list.xlsx next to the catalog."),
+  },
+  async ({ catalogPath, outPath }) => {
+    try {
+      const catalogAbs = path.resolve(catalogPath);
+      if (!fs.existsSync(catalogAbs)) {
+        throw new Error(`feature-catalog.json not found at: ${catalogAbs}`);
+      }
+      const r = await generateDecisionList(catalogAbs, outPath);
+      const text = [
+        `Generated feature decision list: ${r.outPath}`,
+        `- features: ${r.total} (업무기능 ${r.business} / 공통·비기능 ${r.nonBusiness})`,
+        `- decision columns (To-Be 채택, 우선순위) left blank for the workshop.`,
+      ].join("\n");
+      return { content: [{ type: "text", text }] };
+    } catch (err) {
+      return {
+        isError: true,
+        content: [{ type: "text", text: `generate_decision_list failed: ${err.message}` }],
       };
     }
   }

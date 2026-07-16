@@ -80,3 +80,32 @@ save_feature_catalog(catalogPath="outputs/frontend-analysis-output/feature-catal
 ```
 
 동일 대상을 재분석하면 `version` 이 자동 증가하며 이력이 누적된다.
+버전 키는 `(system, application, analysis_type)` 이며 `analyzed_scope` 는 기록만 한다.
+
+## 도구: `generate_decision_list`
+
+분석 완료 후 `feature-catalog.json` 에서 **현업용 기능 결정 목록**
+(`feature-decision-list.xlsx`)을 생성한다. 화면·코드 필드를 제거하고
+업무 관점 컬럼 + 결정 컬럼(To-Be 채택/우선순위, 공란)으로 구성되어,
+현업이 화면 없이 to-be 채택 여부를 논의할 수 있다.
+frontend/backend/background 카탈로그 모두 지원한다.
+
+| 파라미터 | 필수 | 설명 |
+|---|---|---|
+| `catalogPath` | Y | 생성된 `feature-catalog.json` 경로 |
+| `outPath` | N | 출력 xlsx 경로. 기본값은 카탈로그와 같은 폴더의 `feature-decision-list.xlsx` |
+
+호출 예:
+
+```
+generate_decision_list(catalogPath="outputs/frontend-analysis-output/feature-catalog.json")
+```
+
+MCP 도구를 호출할 수 없는 환경에서는 동일 기능의 CLI 로 대체한다:
+
+```bash
+node src/gen-decision-list.js outputs/frontend-analysis-output/feature-catalog.json
+# 또는: npm run gen-decision-list -- outputs/frontend-analysis-output/feature-catalog.json
+```
+
+DB 없이도 동작한다. 결정 목록 시트: `안내`, `기능결정목록`, `요약`.

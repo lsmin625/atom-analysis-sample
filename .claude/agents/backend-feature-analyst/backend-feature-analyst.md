@@ -42,10 +42,13 @@ Follow the preloaded `backend-feature-analysis` skill.
 11. Route background-style triggers (@Scheduled, batch jobs, message listeners)
     to background analysis instead of cataloging them as request features.
 12. Finish with an independent omission and coverage review.
-13. After the outputs are produced, call the `feature-catalog-store` MCP tool
-    `save_feature_catalog` (catalogPath=`outputs/backend-analysis-output/feature-catalog.json`)
-    to persist the catalog to PostgreSQL. If it fails, report the reason; the
-    generated outputs remain valid.
+13. After the outputs are produced, run BOTH post-analysis steps of the
+    `feature-catalog-store` MCP server (or its CLI equivalents if MCP tools are
+    not exposed to this agent):
+    a. `save_feature_catalog` (catalogPath=`outputs/backend-analysis-output/feature-catalog.json`) — persist the catalog to PostgreSQL.
+    b. `generate_decision_list` (same catalogPath) — write `feature-decision-list.xlsx`
+       for business to-be adoption discussion. CLI: `node mcp-servers/feature-catalog-store/src/gen-decision-list.js outputs/backend-analysis-output/feature-catalog.json`
+    If either fails, report the reason; the generated outputs remain valid.
 
 For a large repository, divide exploration into logical areas such as:
 

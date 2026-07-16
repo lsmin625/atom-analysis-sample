@@ -83,17 +83,26 @@
 
 분석을 위해 애플리케이션 원본 파일을 변경하지 않는다.
 
-## Result persistence
+## Result persistence and decision list
 
-분석 작업이 완료되어 6개 표준 산출물을 생성한 뒤에는,
-`feature-catalog-store` MCP 서버의 `save_feature_catalog` 도구를 호출하여
-`feature-catalog.json` 을 로컬 PostgreSQL 에 저장한다.
+분석 작업이 완료되어 6개 표준 산출물을 생성한 뒤에는, 다음 **두 가지
+후처리를 반드시 수행**한다. 두 작업 모두 `feature-catalog-store` MCP
+서버가 담당하며, MCP 도구를 호출할 수 없는 실행 환경(예: 서브에이전트
+툴셋 미노출)에서는 동일 기능의 CLI 로 대체 실행한다.
 
-- 최소 인자: `catalogPath`(생성된 `feature-catalog.json` 경로).
-- 시스템·애플리케이션·저장소·분석 부분 정보는 소스코드와 카탈로그에서
-  자동 추출되고, 분석가 정보는 로컬 `analyst.config.json` 에서 읽으며,
-  분석 일시와 저장물 버전은 도구가 자동 기록한다.
-- 사전 준비(로컬 DB, `analyst.config.json` 설정)는 README.md 와
+1. **DB 저장** — `save_feature_catalog`(catalogPath=생성된 `feature-catalog.json`)
+   로 `feature-catalog.json` 을 로컬 PostgreSQL 에 저장한다. 시스템·애플리케이션·
+   저장소·분석 부분은 소스/카탈로그에서 자동 추출, 분석가는 로컬
+   `analyst.config.json` 에서 읽고, 분석 일시·저장물 버전은 자동 기록된다.
+   - CLI 대체: 없음(DB 저장은 MCP 서버를 stdio 로 구동해 수행).
+
+2. **기능 결정 목록 생성** — `generate_decision_list`(catalogPath 동일)로
+   `feature-decision-list.xlsx` 를 해당 출력 디렉터리에 생성한다. 현업이
+   화면 없이 to-be 채택 여부를 논의할 수 있는 업무 관점 목록이다.
+   - CLI 대체: `node mcp-servers/feature-catalog-store/src/gen-decision-list.js <catalogPath>`
+
+- 사전 준비(로컬 DB, `analyst.config.json`, `npm install`)는 README.md 와
   `mcp-servers/feature-catalog-store/README.md` 를 따른다.
-- 도구 호출이 실패하면(예: DB 미가동, 분석가 미설정) 산출물 생성은
-  유효하므로 실패 사유만 사용자에게 보고하고 산출물은 유지한다.
+- 어느 후처리가 실패해도(예: DB 미가동, 분석가 미설정) 6개 산출물은
+  유효하므로 실패 사유만 보고하고 산출물은 유지한다. 결정 목록 생성은
+  DB 없이도 동작한다.

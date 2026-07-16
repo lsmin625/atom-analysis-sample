@@ -185,12 +185,17 @@ description: >
 
 기존 소스 코드는 수정하지 않는다.
 
-## Result persistence
+## Result persistence and decision list
 
-6개 산출물 생성 후, `feature-catalog-store` MCP 서버의
-`save_feature_catalog` 도구를 호출하여 `feature-catalog.json` 을
-로컬 PostgreSQL 에 저장한다.
+6개 산출물 생성 후 다음 두 후처리를 수행한다(모두 `feature-catalog-store` MCP 서버).
 
-- `catalogPath="outputs/background-analysis-output/feature-catalog.json"`
-- 시스템·애플리케이션·저장소·분석가·분석 일시·버전은 자동 기록된다.
-- 도구 호출이 실패해도 산출물은 유효하며 실패 사유만 보고한다.
+1. **DB 저장** — `save_feature_catalog` (catalogPath=`outputs/background-analysis-output/feature-catalog.json`)
+   → `feature-catalog.json` 을 로컬 PostgreSQL 에 저장. 시스템·애플리케이션·
+   저장소·분석가·분석 일시·버전은 자동 기록된다.
+2. **기능 결정 목록 생성** — `generate_decision_list` (catalogPath 동일)
+   → 같은 디렉터리에 `feature-decision-list.xlsx` 를 생성한다(현업이 화면 없이
+   to-be 채택 여부를 논의하는 업무 관점 목록).
+   - CLI 대체: `node mcp-servers/feature-catalog-store/src/gen-decision-list.js outputs/background-analysis-output/feature-catalog.json`
+
+- 후처리가 실패해도 6개 산출물은 유효하며 실패 사유만 보고한다.
+  결정 목록 생성은 DB 없이도 동작한다.

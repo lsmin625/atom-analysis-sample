@@ -17,6 +17,28 @@ description: >
 
 단순 화면 목록이나 컴포넌트 목록을 작성하지 않는다.
 
+## Target application and scope
+
+이 Skill은 브라우저에서 실행되는 프론트엔드 애플리케이션을 대상으로 한다.
+대표 스택: Vue 3 / React / Angular + TypeScript + 번들러(Vite/Webpack) + UI 프레임워크.
+(참조 저장소 `inputs/oas-doc-ui`는 Vue 3 + TypeScript + Vite + Bootstrap 기반이다.)
+
+주요 분석 대상:
+
+- `src/`
+- `public/`
+- `index.html`
+- `package.json`
+- `vite.config.ts` / `webpack.config.*` / 빌드 설정
+
+기본 제외 대상:
+
+- `node_modules/`, `dist/`, `coverage/`, `.git/`
+- 생성 코드와 번들 파일, lock 파일
+
+애플리케이션 종류가 백엔드 또는 백그라운드이면 이 Skill 대신
+`backend-feature-analysis` 또는 `background-feature-analysis`를 사용한다.
+
 ## Required references
 
 분석을 시작하기 전에 다음 파일을 읽는다.
@@ -170,13 +192,13 @@ description: >
 
 ## Output
 
-다음 파일을 생성한다.
+출력 디렉터리는 `frontend-analysis-output/` 이며 다음 6개 파일을 생성한다.
 
-- `analysis-output/repository-inventory.md`
-- `analysis-output/feature-catalog.json`
-- `analysis-output/feature-catalog.md`
-- `analysis-output/feature-evidence.md`
-- `analysis-output/coverage-report.md`
-- `analysis-output/unresolved-items.md`
+- `frontend-analysis-output/repository-inventory.md`
+- `frontend-analysis-output/feature-catalog.json`
+- `frontend-analysis-output/feature-catalog.md`
+- `frontend-analysis-output/feature-evidence.md`
+- `frontend-analysis-output/coverage-report.md`
+- `frontend-analysis-output/unresolved-items.md`
 
 기존 소스 코드는 수정하지 않는다.

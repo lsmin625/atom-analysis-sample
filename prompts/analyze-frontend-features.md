@@ -18,3 +18,5 @@ frontend-feature-analysis Skill과 저장소의 CLAUDE.md를 준수하라.
 초기 목록을 생성한 후 독립적으로 누락 검증을 수행하라.
 결과는 analysis-output 디렉터리에 저장하라.
 애플리케이션 원본 소스는 수정하지 마라.
+
+분석 결과중 feature-catalog.json 데이터는 db-saver 도구를 이용해서 저장해라.

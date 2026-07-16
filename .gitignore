@@ -4,6 +4,9 @@
 # 개인 맞춤형 설정 및 개인용 권한 설정 (절대 커밋 금지)
 .claude/settings.local.json
 
+# 개인 로컬용 에이전트 메모리 (Git 제외)
+.claude/agent-memory-local/
+
 # Claude가 로컬 실행 시 임시로 생성하는 무시 패턴 가이드 (사용 시 제외)
 .claudeignore
 

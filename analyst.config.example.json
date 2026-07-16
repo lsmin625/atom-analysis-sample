@@ -1,0 +1,10 @@
+{
+  "analyst": {
+    "name": "홍길동",
+    "email": "gildong.hong@example.com",
+    "team": "OAS Platform"
+  },
+  "database": {
+    "connectionString": "postgres://localhost:5432/feature_catalog"
+  }
+}

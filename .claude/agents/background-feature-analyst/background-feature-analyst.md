@@ -43,6 +43,10 @@ Follow the preloaded `background-feature-analysis` skill.
 11. Explicitly flag disabled, unregistered or unreachable triggers/jobs, and
     note multi-instance duplicate-run risk where relevant.
 12. Finish with an independent omission and coverage review.
+13. After the outputs are produced, call the `feature-catalog-store` MCP tool
+    `save_feature_catalog` (catalogPath=`background-analysis-output/feature-catalog.json`)
+    to persist the catalog to PostgreSQL. If it fails, report the reason; the
+    generated outputs remain valid.
 
 For a large repository, divide exploration into logical areas such as:
 

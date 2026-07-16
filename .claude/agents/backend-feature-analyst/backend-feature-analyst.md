@@ -42,6 +42,10 @@ Follow the preloaded `backend-feature-analysis` skill.
 11. Route background-style triggers (@Scheduled, batch jobs, message listeners)
     to background analysis instead of cataloging them as request features.
 12. Finish with an independent omission and coverage review.
+13. After the outputs are produced, call the `feature-catalog-store` MCP tool
+    `save_feature_catalog` (catalogPath=`backend-analysis-output/feature-catalog.json`)
+    to persist the catalog to PostgreSQL. If it fails, report the reason; the
+    generated outputs remain valid.
 
 For a large repository, divide exploration into logical areas such as:
 

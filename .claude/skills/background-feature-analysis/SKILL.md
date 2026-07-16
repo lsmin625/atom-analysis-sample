@@ -184,3 +184,13 @@ description: >
 - `background-analysis-output/unresolved-items.md`
 
 기존 소스 코드는 수정하지 않는다.
+
+## Result persistence
+
+6개 산출물 생성 후, `feature-catalog-store` MCP 서버의
+`save_feature_catalog` 도구를 호출하여 `feature-catalog.json` 을
+로컬 PostgreSQL 에 저장한다.
+
+- `catalogPath="background-analysis-output/feature-catalog.json"`
+- 시스템·애플리케이션·저장소·분석가·분석 일시·버전은 자동 기록된다.
+- 도구 호출이 실패해도 산출물은 유효하며 실패 사유만 보고한다.

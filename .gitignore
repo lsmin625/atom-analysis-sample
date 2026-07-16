@@ -32,5 +32,18 @@ secrets/
 
 # 분석 대상 저장소와 분석 결과
 frontend-analysis-output/
+backend-analysis-output/
+background-analysis-output/
 inputs/
+
+# ==========================================
+# 분석가 로컬 설정 (Git 동기화 금지)
+# ==========================================
+# 분석가 신원 + 로컬 PostgreSQL 접속 정보. 템플릿(analyst.config.example.json)만 커밋.
+analyst.config.json
+
+# ==========================================
+# MCP servers (Node.js)
+# ==========================================
+mcp-servers/**/node_modules/
 

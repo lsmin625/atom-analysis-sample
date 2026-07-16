@@ -82,3 +82,18 @@
 그에 딸린 `feature-schema.md`, `validation-checklist.md`에 정의한다.
 
 분석을 위해 애플리케이션 원본 파일을 변경하지 않는다.
+
+## Result persistence
+
+분석 작업이 완료되어 6개 표준 산출물을 생성한 뒤에는,
+`feature-catalog-store` MCP 서버의 `save_feature_catalog` 도구를 호출하여
+`feature-catalog.json` 을 로컬 PostgreSQL 에 저장한다.
+
+- 최소 인자: `catalogPath`(생성된 `feature-catalog.json` 경로).
+- 시스템·애플리케이션·저장소·분석 부분 정보는 소스코드와 카탈로그에서
+  자동 추출되고, 분석가 정보는 로컬 `analyst.config.json` 에서 읽으며,
+  분석 일시와 저장물 버전은 도구가 자동 기록한다.
+- 사전 준비(로컬 DB, `analyst.config.json` 설정)는 README.md 와
+  `mcp-servers/feature-catalog-store/README.md` 를 따른다.
+- 도구 호출이 실패하면(예: DB 미가동, 분석가 미설정) 산출물 생성은
+  유효하므로 실패 사유만 사용자에게 보고하고 산출물은 유지한다.

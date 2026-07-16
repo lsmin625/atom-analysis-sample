@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "feature-catalog-store": {
+      "command": "node",
+      "args": ["mcp-servers/feature-catalog-store/src/index.js"]
+    }
+  }
+}

@@ -128,8 +128,37 @@ CLI: `node mcp-servers/feature-catalog-store/src/gen-decision-list.js <catalogPa
 
 분석 결과 DB 저장(`save_feature_catalog`)에 쓰는 로컬 PostgreSQL 은
 **Micromamba 환경 `pg`(PostgreSQL 18)** 로 구동하며, 데이터 디렉터리는
-저장소 루트의 `data/`(git 미추적)에 둔다. 기동·정지는 `scripts/pg.sh`
-로 한다.
+저장소 루트의 `data/`(git 미추적)에 둔다.
+
+### 설치 (최초 1회)
+
+시스템에 PostgreSQL 을 설치하지 않고, Micromamba 로 격리된 `pg` 환경에
+설치한다. Micromamba 자체가 없으면 먼저 설치한다.
+
+```bash
+# 0) (Micromamba 미설치 시) 설치 — https://mamba.readthedocs.io 참고
+#    "${SHELL}" <(curl -L micro.mamba.pm/install.sh)
+
+# 1) conda-forge 에서 PostgreSQL 18 을 담은 pg 환경 생성
+micromamba create -n pg -c conda-forge 'postgresql=18'
+
+# 2) 데이터 디렉터리(PGDATA)를 저장소의 data/ 에 초기화
+micromamba run -n pg initdb -D "$(pwd)/data" -U lsmin --encoding=UTF8
+
+# 3) 서버 기동 후 DB 생성
+scripts/pg.sh start
+micromamba run -n pg createdb -h localhost -p 5432 -U lsmin feature_catalog
+```
+
+- 이 저장소는 root prefix `/home/lsmin/.micromamba` 에 만든 `pg` 환경
+  (`/home/lsmin/.micromamba/envs/pg`)을 기준으로 한다. 다른 위치/이름으로
+  만들었으면 `scripts/pg.sh` 실행 시 `PG_ENV` 환경변수로 경로를 지정한다.
+- `initdb` 의 `-U lsmin` 은 `analyst.config.json` 의 접속 사용자와 맞춘다.
+- 설치된 구성: `postgresql 18.4`, `libpq 18.4` (conda-forge).
+
+### 기동/사용
+
+기동·정지는 `scripts/pg.sh` 로 한다.
 
 ```bash
 scripts/pg.sh start     # data/ 를 PGDATA 로 지정해 127.0.0.1:5432 기동
@@ -148,13 +177,8 @@ scripts/pg.sh psql      # feature_catalog DB 접속(psql)
 - 저장 테이블은 `feature_catalog_analysis` 이며, 동일 대상을 재분석하면
   이력이 누적된다(세부 스키마는
   `mcp-servers/feature-catalog-store/README.md` 참고).
-
-환경 변수로 위치를 바꿀 수 있다: `PG_ENV`(pg env 경로),
-`PGDATA`(데이터 디렉터리), `PGPORT`(포트).
-
-> 최초 1회 데이터 디렉터리 초기화가 필요하면 pg env 의 `initdb` 로
-> `data/` 를 생성한 뒤 `scripts/pg.sh start` 로 기동한다.
-> (`createdb feature_catalog` 로 DB 를 만든다.)
+- 환경 변수로 위치를 바꿀 수 있다: `PG_ENV`(pg env 경로),
+  `PGDATA`(데이터 디렉터리), `PGPORT`(포트).
 
 ## 분석가 정보 설정 (git 미동기화)
 
@@ -186,7 +210,9 @@ scripts/pg.sh psql      # feature_catalog DB 접속(psql)
    cd mcp-servers/feature-catalog-store && npm install
    ```
 2. `analyst.config.json` 을 설정한다(위 "분석가 정보 설정" 참조).
-3. 로컬 PostgreSQL 을 기동한다(위 "로컬 PostgreSQL" 참조).
+3. 로컬 PostgreSQL 을 준비한다(위 "로컬 PostgreSQL (Micromamba)" 참조).
+   최초 1회는 설치(환경 생성 + `initdb` + `createdb`)가 필요하고,
+   이후에는 기동만 하면 된다.
    ```bash
    scripts/pg.sh start
    ```

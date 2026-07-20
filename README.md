@@ -46,11 +46,14 @@ atom-analysis-sample/
 │  │  └─ background-feature-analyst/
 │  └─ agent-memory/              # 에이전트의 프로젝트 분석 메모리(재분석 가속)
 ├─ prompts/                      # 분석·검증에 사용하는 프롬프트 템플릿
+├─ scripts/                      # 워크스페이스 유틸리티 스크립트
+│  └─ pg.sh                      # 로컬 PostgreSQL 기동/정지(Micromamba pg env + data/)
 ├─ mcp-servers/                  # 워크스페이스 MCP 서버(Node.js)
 │  └─ feature-catalog-store/     # feature-catalog.json → 로컬 PostgreSQL 저장
 ├─ .mcp.json                     # MCP 서버 등록(Claude Code 자동 인식)
 ├─ analyst.config.example.json   # 분석가 설정 템플릿(커밋됨)
 ├─ analyst.config.json           # 분석가 실제 설정(로컬 전용, git 미추적)
+├─ data/                         # 로컬 PostgreSQL 데이터 디렉터리(PGDATA, git 미추적)
 ├─ inputs/                       # 분석 대상 애플리케이션(git 미추적)
 │  ├─ oas-doc-ui/                # 프론트엔드 샘플: Vue 3 + TypeScript + Vite + Bootstrap
 │  └─ oas-doc-api/               # 백엔드 샘플: Spring Boot + JPA + JWT (Maven)
@@ -59,9 +62,10 @@ atom-analysis-sample/
    └─ oas-doc-api/                # inputs/oas-doc-api 분석 결과(저장소명과 동일)
 ```
 
-> `inputs/`, `outputs/`, `analyst.config.json`, `mcp-servers/**/node_modules/`
-> 는 `.gitignore`에 의해 커밋에서 제외된다. 분석 대상 소스, 생성 결과물,
-> 분석가 개인 설정은 로컬 워크스페이스에만 존재한다.
+> `inputs/`, `outputs/`, `data/`, `analyst.config.json`,
+> `mcp-servers/**/node_modules/` 는 `.gitignore`에 의해 커밋에서
+> 제외된다. 분석 대상 소스, 생성 결과물, DB 데이터, 분석가 개인
+> 설정은 로컬 워크스페이스에만 존재한다.
 
 ## 분석기 구성
 
@@ -120,6 +124,38 @@ CLI: `node mcp-servers/feature-catalog-store/src/gen-decision-list.js <catalogPa
 서버 구성·스키마·도구 파라미터의 자세한 내용은
 `mcp-servers/feature-catalog-store/README.md` 를 참고한다.
 
+## 로컬 PostgreSQL (Micromamba)
+
+분석 결과 DB 저장(`save_feature_catalog`)에 쓰는 로컬 PostgreSQL 은
+**Micromamba 환경 `pg`(PostgreSQL 18)** 로 구동하며, 데이터 디렉터리는
+저장소 루트의 `data/`(git 미추적)에 둔다. 기동·정지는 `scripts/pg.sh`
+로 한다.
+
+```bash
+scripts/pg.sh start     # data/ 를 PGDATA 로 지정해 127.0.0.1:5432 기동
+scripts/pg.sh status    # 기동 여부 확인
+scripts/pg.sh stop      # 정지 (fast)
+scripts/pg.sh restart   # 재기동
+scripts/pg.sh psql      # feature_catalog DB 접속(psql)
+```
+
+- 접속 대상: `postgres://lsmin@localhost:5432/feature_catalog`
+  (`analyst.config.json` 의 `connectionString`).
+- 데이터는 `data/` 에 영속되므로, 다음 기동 시 이전 저장분이 그대로
+  유지된다. `data/` 는 `.gitignore` 에 등록되어 커밋되지 않는다.
+- DB 저장이 `ECONNREFUSED 127.0.0.1:5432` 로 실패하면 DB 미기동
+  상태이므로 `scripts/pg.sh start` 를 먼저 실행한다.
+- 저장 테이블은 `feature_catalog_analysis` 이며, 동일 대상을 재분석하면
+  이력이 누적된다(세부 스키마는
+  `mcp-servers/feature-catalog-store/README.md` 참고).
+
+환경 변수로 위치를 바꿀 수 있다: `PG_ENV`(pg env 경로),
+`PGDATA`(데이터 디렉터리), `PGPORT`(포트).
+
+> 최초 1회 데이터 디렉터리 초기화가 필요하면 pg env 의 `initdb` 로
+> `data/` 를 생성한 뒤 `scripts/pg.sh start` 로 기동한다.
+> (`createdb feature_catalog` 로 DB 를 만든다.)
+
 ## 분석가 정보 설정 (git 미동기화)
 
 분석가는 워크스페이스를 clone 한 뒤, 자신의 정보를 **로컬 파일에만**
@@ -145,16 +181,19 @@ CLI: `node mcp-servers/feature-catalog-store/src/gen-decision-list.js <catalogPa
 
 ## 사용 방법
 
-1. (최초 1회) 로컬 PostgreSQL 준비 및 MCP 서버 의존성 설치.
+1. (최초 1회) MCP 서버 의존성을 설치한다.
    ```bash
-   createdb feature_catalog
    cd mcp-servers/feature-catalog-store && npm install
    ```
 2. `analyst.config.json` 을 설정한다(위 "분석가 정보 설정" 참조).
-3. 분석 대상 애플리케이션을 `inputs/` 하위에 배치한다.
-4. Claude Code에서 분석을 요청한다. 대상 종류에 맞는 Skill 또는
+3. 로컬 PostgreSQL 을 기동한다(위 "로컬 PostgreSQL" 참조).
+   ```bash
+   scripts/pg.sh start
+   ```
+4. 분석 대상 애플리케이션을 `inputs/` 하위에 배치한다.
+5. Claude Code에서 분석을 요청한다. 대상 종류에 맞는 Skill 또는
    전용 서브에이전트가 선택된다. `prompts/`의 템플릿을 참고할 수 있다.
-5. 분석 완료 후 해당 `outputs/` 디렉터리에서 산출물을 확인하고,
+6. 분석 완료 후 해당 `outputs/` 디렉터리에서 산출물을 확인하고,
    결과는 자동으로 PostgreSQL 에 저장된다.
 
 ## 원칙

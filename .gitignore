@@ -45,3 +45,6 @@ analyst.config.json
 # ==========================================
 mcp-servers/**/node_modules/
 
+
+# 로컬 PostgreSQL 데이터 디렉터리(Micromamba pg env로 기동)
+data/

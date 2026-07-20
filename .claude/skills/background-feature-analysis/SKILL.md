@@ -174,14 +174,17 @@ description: >
 
 ## Output
 
-출력 디렉터리는 `outputs/background-analysis-output/` 이며 다음 6개 파일을 생성한다.
+출력 디렉터리는 **분석 대상 저장소명과 동일한** `outputs/<저장소명>/`
+이다. `<저장소명>` 은 분석 대상의 최상위 디렉터리명으로, 기본 위치
+기준 `inputs/` 바로 아래 디렉터리명을 사용한다(예: `inputs/oas-batch`
+→ `outputs/oas-batch/`). 이 디렉터리에 다음 6개 파일을 생성한다.
 
-- `outputs/background-analysis-output/repository-inventory.md`
-- `outputs/background-analysis-output/feature-catalog.json`
-- `outputs/background-analysis-output/feature-catalog.md`
-- `outputs/background-analysis-output/feature-evidence.md`
-- `outputs/background-analysis-output/coverage-report.md`
-- `outputs/background-analysis-output/unresolved-items.md`
+- `outputs/<저장소명>/repository-inventory.md`
+- `outputs/<저장소명>/feature-catalog.json`
+- `outputs/<저장소명>/feature-catalog.md`
+- `outputs/<저장소명>/feature-evidence.md`
+- `outputs/<저장소명>/coverage-report.md`
+- `outputs/<저장소명>/unresolved-items.md`
 
 기존 소스 코드는 수정하지 않는다.
 
@@ -189,13 +192,13 @@ description: >
 
 6개 산출물 생성 후 다음 두 후처리를 수행한다(모두 `feature-catalog-store` MCP 서버).
 
-1. **DB 저장** — `save_feature_catalog` (catalogPath=`outputs/background-analysis-output/feature-catalog.json`)
+1. **DB 저장** — `save_feature_catalog` (catalogPath=`outputs/<저장소명>/feature-catalog.json`)
    → `feature-catalog.json` 을 로컬 PostgreSQL 에 저장. 시스템·애플리케이션·
    저장소·분석가·분석 일시·버전은 자동 기록된다.
 2. **기능 결정 목록 생성** — `generate_decision_list` (catalogPath 동일)
    → 같은 디렉터리에 `feature-decision-list.xlsx` 를 생성한다(현업이 화면 없이
    to-be 채택 여부를 논의하는 업무 관점 목록).
-   - CLI 대체: `node mcp-servers/feature-catalog-store/src/gen-decision-list.js outputs/background-analysis-output/feature-catalog.json`
+   - CLI 대체: `node mcp-servers/feature-catalog-store/src/gen-decision-list.js outputs/<저장소명>/feature-catalog.json`
 
 - 후처리가 실패해도 6개 산출물은 유효하며 실패 사유만 보고한다.
   결정 목록 생성은 DB 없이도 동작한다.

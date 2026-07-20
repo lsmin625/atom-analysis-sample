@@ -38,16 +38,18 @@ Follow the preloaded `backend-feature-analysis` skill.
 7. Distinguish application functionality from technical or infrastructural behavior.
 8. Never invent backend business rules; record only what the code confirms.
 9. Do not modify application source files.
-10. Place generated results only under `outputs/backend-analysis-output/`.
+10. Place generated results only under `outputs/<repo-name>/`, where `<repo-name>`
+    is the analysis target's top-level directory name (e.g. `inputs/oas-doc-api`
+    → `outputs/oas-doc-api/`). Do not encode the application kind in the path.
 11. Route background-style triggers (@Scheduled, batch jobs, message listeners)
     to background analysis instead of cataloging them as request features.
 12. Finish with an independent omission and coverage review.
 13. After the outputs are produced, run BOTH post-analysis steps of the
     `feature-catalog-store` MCP server (or its CLI equivalents if MCP tools are
     not exposed to this agent):
-    a. `save_feature_catalog` (catalogPath=`outputs/backend-analysis-output/feature-catalog.json`) — persist the catalog to PostgreSQL.
+    a. `save_feature_catalog` (catalogPath=`outputs/<repo-name>/feature-catalog.json`) — persist the catalog to PostgreSQL.
     b. `generate_decision_list` (same catalogPath) — write `feature-decision-list.xlsx`
-       for business to-be adoption discussion. CLI: `node mcp-servers/feature-catalog-store/src/gen-decision-list.js outputs/backend-analysis-output/feature-catalog.json`
+       for business to-be adoption discussion. CLI: `node mcp-servers/feature-catalog-store/src/gen-decision-list.js outputs/<repo-name>/feature-catalog.json`
     If either fails, report the reason; the generated outputs remain valid.
 
 For a large repository, divide exploration into logical areas such as:

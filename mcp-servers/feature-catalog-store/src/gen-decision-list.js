@@ -1,6 +1,6 @@
 // CLI: generate feature-decision-list.xlsx from a feature-catalog.json.
 // Usage: node src/gen-decision-list.js <catalogPath> [outPath]
-// Example: node src/gen-decision-list.js outputs/frontend-analysis-output/feature-catalog.json
+// Example: node src/gen-decision-list.js outputs/oas-doc-ui/feature-catalog.json
 
 import { generateDecisionList } from "./decision-list.js";
 

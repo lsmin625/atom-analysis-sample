@@ -62,12 +62,21 @@
 
 ## Output location
 
-각 분석 Skill은 애플리케이션 종류에 따라 다음 규칙의 전용
-출력 디렉터리에 산출물을 작성한다.
+각 분석 Skill은 **분석 대상 저장소명과 동일한 이름의 전용 출력
+디렉터리**에 산출물을 작성한다. 출력 디렉터리 규칙은 다음과 같다.
 
-- 프론트엔드: `outputs/frontend-analysis-output/`
-- 백엔드: `outputs/backend-analysis-output/`
-- 백그라운드: `outputs/background-analysis-output/`
+    outputs/<분석 대상 저장소명>/
+
+- `<분석 대상 저장소명>` 은 분석 대상의 최상위 디렉터리명이다. 기본
+  위치 기준으로 `inputs/` 바로 아래 디렉터리명을 사용한다.
+  예: `inputs/oas-doc-ui` → `outputs/oas-doc-ui/`,
+  `inputs/oas-doc-api` → `outputs/oas-doc-api/`.
+- 요청에 명시된 경로가 있으면 그 경로의 최상위(리프) 디렉터리명을 쓴다.
+- 애플리케이션 종류(프론트/백엔드/백그라운드)는 출력 디렉터리명에
+  반영하지 않는다. 종류와 무관하게 저장소명만 사용한다.
+- 한 저장소에 여러 종류가 섞여 종류별로 산출물을 분리해야 하면,
+  저장소 디렉터리 아래 종류별 하위 디렉터리로 나눈다.
+  예: `outputs/<저장소명>/frontend/`, `outputs/<저장소명>/backend/`.
 
 모든 종류가 공통으로 다음 6개 표준 산출물을 생성한다.
 

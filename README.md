@@ -54,7 +54,9 @@ atom-analysis-sample/
 ├─ inputs/                       # 분석 대상 애플리케이션(git 미추적)
 │  ├─ oas-doc-ui/                # 프론트엔드 샘플: Vue 3 + TypeScript + Vite + Bootstrap
 │  └─ oas-doc-api/               # 백엔드 샘플: Spring Boot + JPA + JWT (Maven)
-└─ outputs/     # 프론트엔드 분석 산출물(git 미추적)
+└─ outputs/                      # 분석 산출물(git 미추적)
+   ├─ oas-doc-ui/                 # inputs/oas-doc-ui 분석 결과(저장소명과 동일)
+   └─ oas-doc-api/                # inputs/oas-doc-api 분석 결과(저장소명과 동일)
 ```
 
 > `inputs/`, `outputs/`, `analyst.config.json`, `mcp-servers/**/node_modules/`
@@ -63,11 +65,17 @@ atom-analysis-sample/
 
 ## 분석기 구성
 
-| 종류 | 분석 Skill | 전용 서브에이전트 | 출력 디렉터리 |
-|---|---|---|---|
-| 프론트엔드 | `frontend-feature-analysis` | `frontend-feature-analyst` | `outputs/frontend-analysis-output/` |
-| 백엔드 | `backend-feature-analysis` | `backend-feature-analyst` | `outputs/backend-analysis-output/` |
-| 백그라운드 | `background-feature-analysis` | `background-feature-analyst` | `outputs/background-analysis-output/` |
+| 종류 | 분석 Skill | 전용 서브에이전트 |
+|---|---|---|
+| 프론트엔드 | `frontend-feature-analysis` | `frontend-feature-analyst` |
+| 백엔드 | `backend-feature-analysis` | `backend-feature-analyst` |
+| 백그라운드 | `background-feature-analysis` | `background-feature-analyst` |
+
+출력 디렉터리는 종류와 무관하게 **분석 대상 저장소명과 동일한**
+`outputs/<저장소명>/` 이다. `<저장소명>` 은 분석 대상의 최상위
+디렉터리명으로, 기본 위치 기준 `inputs/` 바로 아래 디렉터리명을
+사용한다(예: `inputs/oas-doc-ui` → `outputs/oas-doc-ui/`,
+`inputs/oas-doc-api` → `outputs/oas-doc-api/`).
 
 각 Skill은 애플리케이션 종류에 맞춘 12단계 분석 절차, 기능 스키마
 (`feature-schema.md`), 검증 체크리스트(`validation-checklist.md`)를 포함한다.

@@ -16,5 +16,6 @@ frontend-feature-analysis Skill과 저장소의 CLAUDE.md를 준수하라.
 - 테스트 코드의 사용자 시나리오
 
 초기 목록을 생성한 후 독립적으로 누락 검증을 수행하라.
-결과는 outputs 디렉터리(`outputs/frontend-analysis-output/`)에 저장하라.
+결과는 분석 대상 저장소명과 동일한 출력 디렉터리
+(`outputs/<저장소명>/`, 예: `inputs/oas-doc-ui` → `outputs/oas-doc-ui/`)에 저장하라.
 애플리케이션 원본 소스는 수정하지 마라.

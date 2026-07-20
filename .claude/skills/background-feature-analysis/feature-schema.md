@@ -13,7 +13,7 @@
 | featureGroup | Y | 작업 또는 기능 그룹 |
 | featureName | Y | 업무 관점 기능명 |
 | featureType | Y | 기능 유형 |
-| description | Y | 기능 설명 |
+| description | Y | 기능 설명(한국어로 작성) |
 | triggerType | Y | 트리거 유형 |
 | triggerSpec | N | cron 식 / 주기 / 토픽 / 큐 / 이벤트 |
 | entryPoint | Y | 기능 진입점 |

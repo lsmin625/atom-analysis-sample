@@ -13,7 +13,7 @@
 | featureGroup | Y | 화면 또는 기능 그룹 |
 | featureName | Y | 사용자 관점 기능명 |
 | featureType | Y | 기능 유형 |
-| description | Y | 기능 설명 |
+| description | Y | 기능 설명(한국어로 작성) |
 | route | N | 접근 URL |
 | screenName | N | 화면명 |
 | entryPoint | Y | 기능 진입점 |

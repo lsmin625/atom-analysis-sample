@@ -92,6 +92,11 @@ atom-analysis-sample/
 - `coverage-report.md` — 커버리지 지표 및 최종 분류
 - `unresolved-items.md` — 미분류·의심·확인 필요 항목
 
+> **산출물 언어**: 종류·분석 유형과 무관하게 모든 서술형 설명은
+> 한국어로 작성한다. 대상 소스가 영어여도 분석 설명은 한국어로 쓰며,
+> 식별자·심볼·열거형 값·`FEAT-...` ID 는 원문을 유지한다.
+> (규칙은 `CLAUDE.md` 의 "Output language" 참조)
+
 ## 분석 완료 후처리 (자동)
 
 분석이 완료되면 `mcp-servers/feature-catalog-store` MCP 서버가 두 가지

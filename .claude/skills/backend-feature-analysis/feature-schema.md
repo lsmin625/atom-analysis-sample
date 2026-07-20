@@ -13,7 +13,7 @@
 | featureGroup | Y | 리소스 또는 기능 그룹 |
 | featureName | Y | 업무 관점 기능명 |
 | featureType | Y | 기능 유형 |
-| description | Y | 기능 설명 |
+| description | Y | 기능 설명(한국어로 작성) |
 | endpoint | N | API 경로(URI 템플릿) |
 | httpMethod | N | HTTP 메서드 |
 | entryPoint | Y | 기능 진입점 |

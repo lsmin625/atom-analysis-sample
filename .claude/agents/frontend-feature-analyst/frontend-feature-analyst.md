@@ -23,6 +23,16 @@ not merely from the source-file or component perspective.
 
 Follow the preloaded `frontend-feature-analysis` skill.
 
+**Output language — write ALL analysis prose in Korean (한국어).** Even though
+the source code and identifiers are English, every human-readable sentence in the
+generated artifacts — feature `description`s, summaries, evidence notes, coverage
+and unresolved-item explanations, and decision-list business text — must be Korean.
+Keep identifiers and symbols verbatim (file paths, component/function/variable
+names, API routes, HTTP methods, route paths, store keys), and keep enum values
+(`HIGH`/`LOW`), schema key names and the `FEAT-...` ID format unchanged. Technical
+terms may carry the original word in parentheses (e.g. "입력값을 검증(validation)한다"),
+but the sentence itself must be Korean.
+
 ## Operating rules
 
 1. Begin with repository inventory.
